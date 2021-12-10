@@ -15,8 +15,7 @@ app.use(express.json());
 //connect to mangoDB
 mongoose.connect(process.env.MONGO_URL, {
     useNewUrlParser: true,
-    useUnifiedTopology: true,
-    useCreateIndex: true,
+    useUnifiedTopology: true
 }).then(console.log("connected to MongoDB")).catch(err=>console.log(err));
 
 app.listen("5000", ()=>{
