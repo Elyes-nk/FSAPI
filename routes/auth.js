@@ -1,27 +1,25 @@
 const router = require("express").Router();
 const User = require("../models/User");
-const bcrypt = require("bcrypt");
+
+const CryptoJS = require("crypto-js");
+const jwt = require("jsonwebtoken");
 
 //Register
 router.post("/register", async(req,res) => {
-    try{
-        //crypté mdp
-        const salt = await bcrypt.genSalt(10);
-        const hashedPass = await bcrypt.hash(req.body.password, salt)
-        
-        const newUser = new User({
-            username: req.body.username,
-            email: req.body.email,
-            password: hashedPass,
-        });
-        //enregistre dans mongoDB
+    const newUser = new User({
+        username: req.body.username,
+        email: req.body.email,
+        password: CryptoJS.AES.encrypt(
+          req.body.password,
+          process.env.SECRET_KEY
+        ).toString(),
+      });
+      try {
         const user = await newUser.save();
-        //renvoie message succes
-        res.status(200).json(user)
-    } catch(err) {
-        //renvoie message fail
-        res.status(500).json(err)
-    }
+        res.status(201).json(user);
+      } catch (err) {
+        res.status(500).json(err);
+      }
 });
 
 
@@ -32,11 +30,20 @@ router.post("/login", async(req,res) => {
         const user = await User.findOne({username: req.body.username});
         !user && res.status(400).json("wrong credentials");
 
-        const validatePass = await bcrypt.compare(req.body.password, user.password);
-        !validatePass && res.status(400).json("wrond credentials");
+        const bytes = CryptoJS.AES.decrypt(user.password, process.env.SECRET_KEY);
+        const originalPassword = bytes.toString(CryptoJS.enc.Utf8);
+
+        originalPassword !== req.body.password &&
+            res.status(401).json("Wrong password or username!");
+
+        const accessToken = jwt.sign(
+            { id: user._id },
+            process.env.SECRET_KEY,
+            { expiresIn: "5d" }
+            );
 
         const {password, ...others} = user._doc;
-        res.status(200).json(others);
+        res.status(200).json({...others, accessToken});
     }catch(err){
         res.status(500).json(err);
     }
