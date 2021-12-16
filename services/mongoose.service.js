@@ -2,10 +2,7 @@
 const mongoose = require("mongoose");
 
 //use .env to connect to mangoDB
-const dotenv = require("dotenv");
-dotenv.config();
-
-
+const dotenv = require("dotenv").config();
 
 exports.dbConnect = () => {
     //connect to mangoDB
