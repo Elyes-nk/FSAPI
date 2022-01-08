@@ -1,5 +1,6 @@
 const User = require("../models/User");
 const nodemailer = require("../config/nodemailer");
+const jwt_decode = require('jwt-decode');
 
 
 const CryptoJS = require("crypto-js");
@@ -20,7 +21,7 @@ exports.register = async(req, res) => {
       });
       try {
         const user = await newUser.save();
-        res.status(201).json(user);
+        res.status(201).json(token);
         // // email generator
         // nodemailer.sendConfirmationEmail(
         //   user.username,
@@ -56,7 +57,11 @@ exports.login = async(req,res) => {
             );
 
         const {password, ...others} = user._doc;
-        res.status(200).json({...others, accessToken});
+        res.status(200).send({
+          ...others,
+          auth : true,
+          accessToken
+        });
     }catch(err){
         res.status(500).json(err);
     }
@@ -79,7 +84,6 @@ exports.update = async(req,res) => {
                 {new:true});
             res.status(200).json(updatedUser);
         } catch(err) {
-            //renvoie message fail
             res.status(500).json(err)
         }
     }else{
@@ -109,13 +113,25 @@ exports.delete = async(req,res) => {
     
 }
 
+
+exports.getSecretUser = async(req,res) => {
+  try{
+      const decodedToken = jwt_decode(req.headers.token);
+      const user = await User.findById(decodedToken.id);
+      const {password, ...others} = user._doc;
+      res.status(200).json(others);
+  }catch(err){
+      res.status(500).json(err);
+  }
+}
+
 exports.getUser = async(req,res) => {
     try{
         const user = await User.findById(req.params.id);
         const {password, ...others} = user._doc;
         res.status(200).json(others);
     }catch(err){
-        res.status(500).json(err)
+        res.status(500).json(err);
     }
 }
 
@@ -134,4 +150,10 @@ exports.getUsers = async (req, res) => {
     /*} else {
       res.status(403).json("You are not allowed to see all users!");
     }*/
+  }
+
+  exports.verifyToken = (req,res) =>{
+    if(req.user){
+      res.status(200).json({verify:true})
+    }
   }

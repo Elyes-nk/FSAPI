@@ -1,5 +1,5 @@
 import React from 'react';
-import titlePage from '../components/ui/Title';
+import Title from '../components/ui/Title';
 
 export default function index() {
     return (

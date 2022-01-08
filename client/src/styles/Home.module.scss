@@ -1,3 +1,7 @@
+@import "mixins";
+
+$color-primary: black;
+
 .container {
   padding: 0 2rem;
 }
@@ -26,11 +30,11 @@
   justify-content: center;
   align-items: center;
   flex-grow: 1;
-}
 
-.title a {
-  color: #0070f3;
-  text-decoration: none;
+  a {
+    color: #0070f3;
+    text-decoration: none;
+  }
 }
 
 .title a:hover,
@@ -108,9 +112,10 @@
   margin-left: 0.5rem;
 }
 
-@media (max-width: 600px) {
+@include desktop(){
   .grid {
     width: 100%;
     flex-direction: column;
   }
 }
+

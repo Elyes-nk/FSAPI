@@ -9,6 +9,10 @@ router.put("/:id", verify, userController.update);
 //DELETE
 router.delete("/:id", verify, userController.delete);
 
+
+//GET user with jwt token
+router.get("/getSecretUser/", userController.getSecretUser);
+
 //GET
 router.get("/:id", verify, userController.getUser);
 

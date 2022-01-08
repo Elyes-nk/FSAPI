@@ -2,22 +2,24 @@ import React from 'react';
 import HeaderMenu from "../header/HeaderMenu";
 import HeaderTolbar from '../header/HeaderTolbar';
 import Headerlogo from '../header/HeaderLogo';
-
 import Footer from "../footer/Footer";
 
+import styles from "./MainLayout.module.scss"
 
 const Mainlayout = ({children}) => {
     return (
         <>
-            <Header className="header__main">
+            <header className={styles.header}>
                 <Headerlogo/>
                 <HeaderMenu/>
                 <HeaderTolbar/>
-            </Header>
-                <main>
+            </header>
+                <main className={styles.main}>
                     {children}
                 </main>
-            <Footer />
+            <footer>
+                <Footer />
+            </footer>
         </>
     );
 }

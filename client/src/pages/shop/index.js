@@ -2,6 +2,7 @@ import React from 'react';
 
 import { getProducts } from '../../../graphql/queries/products';
 import { useQuery } from '@apollo/client';
+//react-hooks
 
 const Index = () => {
     const {loading, error, data} = useQuery(getProducts); 
