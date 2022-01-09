@@ -1,23 +1,6 @@
-
-.header {
-    display: flex;
-
-    padding: 2rem 0;
-    border-top: 1px solid #eaeaea;
-
-    flex: 1;
-    justify-content: center;
-    align-items: center;
-
-    
-  }
-
-
-.main {
-  min-height: 100vh;
-  padding: 0rem 0;
-  flex: 1;
+.header__main {
   display: flex;
-  flex-direction: column;
+  justify-content: space-between;
   align-items: center;
+  padding: 15px;
 }

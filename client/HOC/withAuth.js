@@ -1,15 +1,39 @@
-import React, { useState } from "react";
+import React, { useState, useEffect } from "react";
+import { useRouter } from "next/router";
+import authService from "../services/auth.service";
+import axios from "axios"
 
 const withAuth = (WrappedComponent) => {
   return (props) => {
+    const router = useRouter();
     const [verify, setVerify] = useState(false);
-    //On va chercher le token
-    //On consomme un endpoint de vérification de token qui renvoie true ou false
-    //dans le useEffect
-    // À l'intérieur du then
-    // - cas 1: si true return <WrappedComponent {..props}/>
-    // - cas 2 : Si false on redirige sur login
-    // - remove du localsotrage
+
+
+    useEffect(() => {
+        const verifyToken = async() => {
+          try{
+            const token = localStorage.getItem("token");
+            const res = await axios.get('http://localhost:3030/api/v1/auth/verifytoken', {
+              headers: {
+                "authorization":token
+              }
+            })
+            setVerify(true)
+          }catch(err){
+            localStorage.removeItem("token");
+            router.push("/login");
+          }
+          verifyToken();
+        }
+    }, [])
+
+
+
+    if (verify) {
+      return <WrappedComponent {...props} />;
+    } else {
+      return null;
+    }
   };
 };
 

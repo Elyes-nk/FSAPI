@@ -1,8 +1,9 @@
 import React from 'react'
+import styles from './Input.module.scss'
 
 function Input(props) {
     return (
-        <div>
+        <div className={styles.form__group}>
             <label>
                 {props.label}
             </label>

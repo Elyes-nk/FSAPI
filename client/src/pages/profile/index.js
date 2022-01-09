@@ -1,7 +1,8 @@
 import React,{useState, useEffect} from 'react'
-import styles from './Profile.module.scss'
+import styles from './index.module.scss'
 import axios from 'axios'
-
+import Title from '../../components/ui/title/Title'
+import Input from '../../components/ui/input/Input'
 
 function index() {
     const [username, setUsername] = useState("")
@@ -47,54 +48,43 @@ function index() {
           setSucess(true);
         } catch (error) 
         {
-          dispatch({type:"UPDATE_FAILURE"})
-         }
+            setError(true)
+        }
 
     }
     
     return (
-        <div className={styles.settings}>
-            <div className={styles.settings_wrapper}>
-                <div className={styles.settings_title}>
-                    <span className={styles.settings_title_update}>Your Account</span>
-                    {sucess && (
-                        <span className={styles.settings_title_update} style={{color:"green", textAlign:"center"}}>Your Account has been updated successfuly</span>
-                    )}
-                </div>
-                <form className={styles.settings_form} onSubmit={handleSubmit}>
-        
-        
-        
-                    <label>Username</label>
-                    <input 
+        <div>
+               
+                <Title title="Your account"/>
+                <form className={styles.form__profil} onSubmit={handleSubmit}>
+                    <Input 
                         type="text" 
                         value={username} 
+                        lable="Username"
                         name="name" 
                         onChange={e=>setUsername(e.target.value)}
                     />
-                    <label>Email</label>
-                    <input 
+                    <Input 
                         type="email" 
                         value={email} 
+                        lable="Email"
                         name="email"
                         onChange={e=>setEmail(e.target.value)}
                     />
-                    <label>Password</label>
-                    <input 
+                    <Input 
                         type="password" 
+                        lable="Password"
                         onChange={e=>setPassword(e.target.value)}
                     />
         
                     
-                    <button className={styles.settings_submit_button} type="submit">
-                        Update
-                    </button>
-                 
-        
-        
+                    <input className="btn btn-black" type="submit" />
+                    {sucess && (
+                        <Message type="success" message="Your Account has been updated successfuly"/>
+                    )}
                 </form>
             </div>
-      </div>
     );
 }
 

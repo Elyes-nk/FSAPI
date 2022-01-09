@@ -1,10 +1,10 @@
 import React from 'react'
-import Input from '../../components/ui/Input'
+import Input from '../../../components/ui/input/Input'
 import {useState} from 'react'
-import styles from './Auth.module.scss'
+import styles from "./index.module.scss";
 import axios from 'axios'
 import Router from 'next/router'
-
+import Title from '../../../components/ui/title/Title'
 
 function register() {
     const config = {
@@ -35,43 +35,43 @@ function register() {
     };
 
     return (
-        <div className={styles.login}>
-            <div className={styles.settings_wrapper}>
-                <span className={styles.settings_title}>Register</span>
-                <form className={styles.settings_form} onSubmit={handleSubmit}>
+        <div className={styles.page__register}>
+                <Title title="Inscription"/>
+                <form className={styles.form__register} onSubmit={handleSubmit}>
                     <div>
                         <Input 
                             type="text"
+                            label="Nom"
                             name="Username"
                             placeholder="Enter your username..."
                             onChange={e=>setUsername(e.target.value)}
-                            required
+                            required={true}
                         />
                         <Input 
                             type="email"
                             name="Email"
+                            label="Email"
                             placeholder="Enter your email..."
                             onChange={e=>setEmail(e.target.value)}
-                            required
+                            required={true}
                         />
                         <Input 
                             type="password"
                             name="Password"
+                            label="Password"
                             onChange={e=>setPassword(e.target.value)}
                             placeholder="Enter your password..."
-                            required
+                            required={true}
                         />
                     </div>
-                    <button 
-                        className={styles.button}
+                    <input 
+                        className="btn btn-black"
                         type="submit"
-                    >
-                        Register
-                    </button>
+                        value="Register"
+                    />        
                     {error && <p className={styles.p_err_message}>Une erreur est survenue.</p>}
                 </form>
             </div>
-        </div>
     )
 }
 

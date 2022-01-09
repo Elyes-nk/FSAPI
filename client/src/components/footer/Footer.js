@@ -6,10 +6,9 @@ import styles from './Footer.module.scss'
 
 const Footer = () => {
     return (
-        <div className={styles.footer}>
-            <div className='footer__logo'>
+        <div className={styles.footer__main}>
+            <div className={styles.footer__logo}>
                 <img 
-                    className={styles.bottomImg}
                     src={LogoImg.src} alt="Nike" 
                 />
             </div>

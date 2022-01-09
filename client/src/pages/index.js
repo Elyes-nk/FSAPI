@@ -1,10 +1,9 @@
 import Head from 'next/head';
-import styles from '../styles/Home.module.scss';
-import Title from '../components/ui/Title';
+import Title from '../components/ui/title/Title';
 
 export default function Home() {
   return (
-    <div className={styles.container}>
+    <div>
 
       <Head>
         <title>Next Js</title>
@@ -12,7 +11,7 @@ export default function Home() {
         <link rel="icon" href="/favicon.ico" />
       </Head>
 
-      <main className={styles.main}>
+      <main >
         <Title title="home"/>
       </main>
 

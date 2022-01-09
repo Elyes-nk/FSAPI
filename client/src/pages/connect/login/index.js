@@ -1,12 +1,16 @@
 import React from 'react'
 import {useState} from 'react'
-import Input from '../../components/ui/Input'
+import Input from '../../../components/ui/input/Input'
 import axios from 'axios'
 import Router from 'next/router'
+import Link from 'next/link'
 
 
 
-import styles from './Auth.module.scss'
+import styles from './index.module.scss'
+import Title from '../../../components/ui/title/Title'
+import Message from '../../../components/ui/message/Message'
+
 function login() {
    
     const [username, setUsername] = useState("");
@@ -31,14 +35,14 @@ function login() {
     }
 
     return (
-        <div className={styles.settings}>
-            <div className={styles.settings_wrapper}>
-                <span className={styles.settings_title}>Login</span>
-                <form className={styles.settings_form} onSubmit={handleSubmit}>
+        <div className={styles.page__login}>
+                <Title title='Login'/>
+                <form className={styles.form__login} onSubmit={handleSubmit}>
                     <div>
                         <Input 
                             type="text"
                             name="Username"
+                            label="Username"
                             placeholder="Enter your username..."
                             onChange={e=>setUsername(e.target.value)}
                             required
@@ -46,21 +50,24 @@ function login() {
                         <Input 
                             type="password"
                             name="Password"
+                            label="Password"
                             onChange={e=>setPassword(e.target.value)}
                             placeholder="Enter your password..."
                             required
                         />
+                          <Link href='/connect/register'>
+                                <a className={styles.button__register}>Register?</a>
+                            </Link>
                     </div>
-                    <button 
-                        className={styles.button}
+                    <input 
+                        className="btn btn-black"
                         type="submit"
-                    >
-                        Login
-                    </button>
-                    {error && <p className={styles.p_err_message}>Une erreur est survenue.</p>}
+                        value="Connect"
+                    />
+                  
+                    {error && <Message type="error" message="Une erreur est survenue."/>}
                 </form>
             </div>          
-        </div>
     )
 }
 
