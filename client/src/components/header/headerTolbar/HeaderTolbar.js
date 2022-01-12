@@ -1,26 +1,32 @@
 import Link from 'next/link'
-import React, {useState} from 'react'
+import React, {useState, useEffect} from 'react'
 import LogoImg from '../../../../public/cart.jpeg'
 import styles from "./HeaderTolbar.module.scss";
+import { useRouter } from "next/router";
 
 
 const HeaderTolbar = () => {
+    const router = useRouter();
     const [loged, setLoged] = useState(false)
-    if (typeof window !== 'undefined') {
+    useEffect(() => {
         const token = localStorage.getItem("token");  
         token && setLoged(true) 
+    }, [])
+    const handleLogout = () => {
+        localStorage.removeItem("token")
+        router.push("/login");
     }
     return (
         <div className={styles.header__toolbar}>
             {loged? (
                 <a 
                     className="btn btn-white"
-                    onClick={()=>localStorage.removeItem("token")}
+                    onClick={()=>handleLogout()}
                 >
                     Logout
                 </a>
             ):(
-                <Link href="/connect/login">
+                <Link href="/login">
                     <a className="btn btn-white">
                         Login
                     </a>

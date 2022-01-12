@@ -1,6 +1,6 @@
 import React from 'react'
 import {useState} from 'react'
-import Input from '../../../components/ui/input/Input'
+import Input from '../../components/ui/input/Input'
 import axios from 'axios'
 import Router from 'next/router'
 import Link from 'next/link'
@@ -8,8 +8,8 @@ import Link from 'next/link'
 
 
 import styles from './index.module.scss'
-import Title from '../../../components/ui/title/Title'
-import Message from '../../../components/ui/message/Message'
+import Title from '../../components/ui/title/Title'
+import Message from '../../components/ui/message/Message'
 
 function login() {
    
@@ -55,17 +55,18 @@ function login() {
                             placeholder="Enter your password..."
                             required
                         />
-                          <Link href='/connect/register'>
-                                <a className={styles.button__register}>Register?</a>
-                            </Link>
+                        
                     </div>
                     <input 
                         className="btn btn-black"
                         type="submit"
                         value="Connect"
                     />
+                    <Link href='/register'>
+                        <a className={styles.button__register}>Register?</a>
+                    </Link>
                   
-                    {error && <Message type="error" message="Une erreur est survenue."/>}
+                    {error && <Message type="error" message="Wrong credentials !"/>}
                 </form>
             </div>          
     )

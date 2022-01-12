@@ -1,17 +1,12 @@
 import React from 'react'
-import Input from '../../../components/ui/input/Input'
+import Input from '../../components/ui/input/Input'
 import {useState} from 'react'
 import styles from "./index.module.scss";
 import axios from 'axios'
 import Router from 'next/router'
-import Title from '../../../components/ui/title/Title'
+import Title from '../../components/ui/title/Title'
 
 function register() {
-    const config = {
-        headers: {
-          "Content-Type": "application/json",
-        }
-      };
     const [username, setUsername] = useState("");
     const [email, setEmail] = useState("");
     const [password, setPassword] = useState();

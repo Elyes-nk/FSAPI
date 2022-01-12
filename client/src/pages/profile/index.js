@@ -3,6 +3,7 @@ import styles from './index.module.scss'
 import axios from 'axios'
 import Title from '../../components/ui/title/Title'
 import Input from '../../components/ui/input/Input'
+import withAuth from '../../../HOC/withAuth'
 
 function index() {
     const [username, setUsername] = useState("")
@@ -12,28 +13,27 @@ function index() {
     const [sucess, setSucess] = useState(false)
     const [error, setError] = useState(false)
 
-    if (typeof window !== 'undefined') {
+
+    useEffect(() => {
         const token = localStorage.getItem("token");   
-    
-        useEffect(() => {
-            const fetchUser = async () => {
-                try {
-                    const res = await axios.get("http://localhost:3030/api/users/getSecretUser",{
-                        headers:{
-                            "token":token
-                        }
-                    })
-                    setUserId(res.data._id)
-                    setUsername(res.data.username)
-                    setEmail(res.data.email)                  
-                } catch (error) {
-                    setError(true)
-                }
+        const fetchUser = async () => {
+            try {
+                const res = await axios.get("http://localhost:3030/api/users/get-user",{
+                    headers:{
+                        "authorization":token
+                    }
+                })
+                setUserId(res.data._id)
+                setUsername(res.data.username)
+                setEmail(res.data.email)                  
+            } catch (error) {
+                setError(true)
             }
-            fetchUser()
-        
-        }, [])
-    }
+        }
+        fetchUser()
+    
+    }, [])
+    
 
     const handleSubmit = async() => {
         e.preventDefault();
@@ -44,48 +44,52 @@ function index() {
           password,
         }
         try {
-          const res = await axios.put("/users/"+userId,updatedUser);
+          const res = await axios.put("/users/"+userId,
+            {
+                headers:{
+                    "authorization":token,
+                }
+            },
+            updatedUser);
           setSucess(true);
         } catch (error) 
         {
             setError(true)
         }
-
     }
     
     return (
         <div>
-               
-                <Title title="Your account"/>
-                <form className={styles.form__profil} onSubmit={handleSubmit}>
-                    <Input 
-                        type="text" 
-                        value={username} 
-                        lable="Username"
-                        name="name" 
-                        onChange={e=>setUsername(e.target.value)}
-                    />
-                    <Input 
-                        type="email" 
-                        value={email} 
-                        lable="Email"
-                        name="email"
-                        onChange={e=>setEmail(e.target.value)}
-                    />
-                    <Input 
-                        type="password" 
-                        lable="Password"
-                        onChange={e=>setPassword(e.target.value)}
-                    />
-        
-                    
-                    <input className="btn btn-black" type="submit" />
-                    {sucess && (
-                        <Message type="success" message="Your Account has been updated successfuly"/>
-                    )}
-                </form>
-            </div>
+            <Title title="Your account"/>
+            <form className={styles.form__profil} onSubmit={()=>handleSubmit()}>
+                <Input 
+                    type="text" 
+                    value={username} 
+                    label="Username"
+                    name="name" 
+                    onChange={e=>setUsername(e.target.value)}
+                />
+                <Input 
+                    type="email" 
+                    value={email} 
+                    label="Email"
+                    name="email"
+                    onChange={e=>setEmail(e.target.value)}
+                />
+                <Input 
+                    type="password" 
+                    label="Password"
+                    onChange={e=>setPassword(e.target.value)}
+                />
+    
+                
+                <input className="btn btn-black" type="submit" />
+                {sucess && (
+                    <Message type="success" message="Your Account has been updated successfuly"/>
+                )}
+            </form>
+        </div>
     );
 }
 
-export default index
+export default withAuth(index)

@@ -1,6 +1,5 @@
 import React, { useState, useEffect } from "react";
 import { useRouter } from "next/router";
-import authService from "../services/auth.service";
 import axios from "axios"
 
 const withAuth = (WrappedComponent) => {
@@ -13,7 +12,8 @@ const withAuth = (WrappedComponent) => {
         const verifyToken = async() => {
           try{
             const token = localStorage.getItem("token");
-            const res = await axios.get('http://localhost:3030/api/v1/auth/verifytoken', {
+            console.log(token)
+            const res = await axios.get('http://localhost:3030/api/auth/verifytoken', {
               headers: {
                 "authorization":token
               }
@@ -23,8 +23,8 @@ const withAuth = (WrappedComponent) => {
             localStorage.removeItem("token");
             router.push("/login");
           }
-          verifyToken();
         }
+        verifyToken();
     }, [])
 
 

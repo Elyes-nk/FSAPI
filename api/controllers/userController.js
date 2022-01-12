@@ -116,7 +116,7 @@ exports.delete = async(req,res) => {
 
 exports.getSecretUser = async(req,res) => {
   try{
-      const decodedToken = jwt_decode(req.headers.token);
+      const decodedToken = jwt_decode(req.headers.authorization);
       const user = await User.findById(decodedToken.id);
       const {password, ...others} = user._doc;
       res.status(200).json(others);
