@@ -37,7 +37,6 @@ exports.login = async(req,res) => {
     try{
         const user = await User.findOne({username: req.body.username});
         !user && res.status(400).json("wrong credentials");
-
         //password check
         const bytes = CryptoJS.AES.decrypt(user.password, process.env.SECRET_KEY);
         const originalPassword = bytes.toString(CryptoJS.enc.Utf8);
