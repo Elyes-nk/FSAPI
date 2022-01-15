@@ -15,8 +15,8 @@ app.use('/api', apiRouter);
 
 //======================couche graphQl=========================
 const { ApolloServer, gql } = require('apollo-server-express');
-const schema = require('../graphQl/schemas/user');
-const resolvers = require('../graphQl/resolvers/user');
+const schema = require('../graphQl/schemas/product');
+const resolvers = require('../graphQl/resolvers/product');
 
 const serverGraphQl = new ApolloServer({
     typeDefs: schema,
