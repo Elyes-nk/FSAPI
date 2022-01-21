@@ -2,12 +2,6 @@ const mongoose = require("mongoose");
 const Schema = mongoose.Schema;
 
 const Orderschema = new mongoose.Schema({
-    name:{
-        type:String,
-    },
-    price:{
-        type:Number,
-    },
     user:{
         type:Schema.Types.ObjectId,
         ref:'User'
@@ -16,6 +10,15 @@ const Orderschema = new mongoose.Schema({
         type:Schema.Types.ObjectId,
         ref:'Product'
     }],
+    status:{
+        Type:String
+    },
+    stripeId:{
+        Type:String
+    },
+    amount:{
+        Type:Number
+    },
 },
 {timestamps:true}
 );

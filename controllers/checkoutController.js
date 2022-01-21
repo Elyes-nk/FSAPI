@@ -18,10 +18,17 @@ const initiateStripeSession = async (req) => {
       });
     });
 
+    const productsId = [];
+    req.body.cart.forEach(item=>{
+      productsId.push(item.product.id)
+    })
 
     const session = await stripe.checkout.sessions.create({
         payment_method_types: ["card"],
         line_items: line_items,
+        payment_intent_data:{
+          metadata:{userId:req.body.userId, productsId:JSON.stringify(productsId)},
+        },
         mode: "payment",
         success_url: `${process.env.CLIENT_URL}/confirmation`,
         cancel_url: `${process.env.CLIENT_URL}/cancel`,
@@ -31,10 +38,6 @@ const initiateStripeSession = async (req) => {
 }
 
 exports.createSession = async function (req, res) {
-    const productsId = [];
-    req.body.cart.forEach(item=>{
-      productsId.push(item.product.id)
-    })
     try {
       const session = await initiateStripeSession(req);
       res.status(200).json({
@@ -42,20 +45,8 @@ exports.createSession = async function (req, res) {
         price: session.amout_total,
         currency: session.currency,
       });      
-          // try{
-          //   await axios.post(`${process.env.API_URL}/order/`, {
-          //       name:req.body.name,
-          //       price:req.body.price,
-          //       productsId:req.body.productsId,
-          //       userId:req.body.userId,
-          // })
-          // }catch(err){
-          //   console.log(err);
-          //   res.status(500).json(err);
-          //   return;
-          // }
-
     } catch (err) {
+      console.log(err);
       res.status(500).json(err);
     }
   };
