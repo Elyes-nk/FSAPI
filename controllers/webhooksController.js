@@ -1,12 +1,10 @@
 require("dotenv").config();
-const Order = require("../models/order");
+const Order = require("../models/Order");
 const stripe = require("stripe")(process.env.STRIPE_SECRET_KEY);
 
 exports.stripewebhook = (req, res) => {
-
   let data;
   let eventType;
-
   const webhookSecret = process.env.WEBHOOK_SECRET_KEY;
 
   if (webhookSecret) {
@@ -30,27 +28,18 @@ exports.stripewebhook = (req, res) => {
     eventType = req.body.type;
   }
   console.log(eventType);
-
   switch (eventType) {
 
     case "payment_intent.succeeded":
-      console.log(data);
       const newOrder = new Order({
-        amount: data.object.amount,
-        date:data.object.create,
+        amount: data.object.amount / 100,
+        date:data.object.created,
         user: data.object.metadata.userId,
-        products: data.object.metadata.productsId,
+        products: JSON.parse(data.object.metadata.productsId),
         stripeId: data.object.id,
         status: data.object.status
       });
-      try {
-        const neworeder = newOrder.save();
-        res.status(201).json();
-        console.log(neworeder);
-      } catch (err) {
-        res.status(500).json(err);
-      }
-          
+      newOrder.save().then((data) => console.log(data)).catch(err => console.log(err));
       break;
     default:
   }

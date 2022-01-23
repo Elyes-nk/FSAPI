@@ -5,10 +5,12 @@ const cors=require('cors');
 
 require("dotenv").config();
 
-//allow app use json from the body that get passed up to it 
+//===================WEBHOOKS MIDDELWARE========================
+app.use('/api/webhooks/stripe', express.raw({type: "*/*"}))
+//==============================================================
+
 app.use(express.json());
 app.use(cors());
-
 app.use('/api', apiRouter);
 
 
@@ -29,22 +31,14 @@ const graphQlServer = new ApolloServer({
 graphQlServer.applyMiddleware({ app, path: '/graphql' })
 //==============================================================
 
-//===================WEBHOOKS MIDDELWARE========================
-app.use(function (req, res, next) {
-    if (req.originalUrl === '/api/webhooks/stripe') {
-      next();
-    } else {
-      express.json()(req, res, next);
-    }
-  });
-//==============================================================
 
 
+//================================================================
 exports.start = () => {   
     app.listen(process.env.PORT, (err)=>{
         if (err) {
             console.log(err);
         }
-        console.log("backend is running ! at port : "+process.env.PORT);
+        console.log("BACKEND is running 🔥 at port : "+process.env.PORT);
     });
 }

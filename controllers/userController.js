@@ -1,5 +1,4 @@
 const User = require("../models/User");
-const nodemailer = require("../config/nodemailer");
 const jwt_decode = require('jwt-decode');
 
 
@@ -22,12 +21,6 @@ exports.register = async(req, res) => {
       try {
         const user = await newUser.save();
         res.status(201).json(token);
-        // // email generator
-        // nodemailer.sendConfirmationEmail(
-        //   user.username,
-        //   user.email,
-        //   user.confirmationCode
-        // );
       } catch (err) {
         res.status(500).json(err);
       }
@@ -42,12 +35,7 @@ exports.login = async(req,res) => {
         const originalPassword = bytes.toString(CryptoJS.enc.Utf8);
 
         originalPassword !== req.body.password &&
-          res.status(401).send({message:"Wrong password or username!"});
-
-        // //activated account check with mail
-        // user.status !== "Active" && 
-        //   res.status(401).send({message: "Pending Account. Please Verify Your Email!"});
-        
+          res.status(401).send({message:"Wrong password or username!"}); 
 
         const accessToken = jwt.sign(
             { id: user._id },

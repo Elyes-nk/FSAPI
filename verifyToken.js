@@ -1,6 +1,5 @@
 const jwt = require("jsonwebtoken");
 
-//middleware auth
 function verify(req, res, next) {
     const token = req.headers.authorization;
     if (token == null) return res.status(401).send({auth:false,token:null,message:"missing token"});
