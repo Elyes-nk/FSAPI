@@ -1,2 +1,2 @@
-# BackEnd with NodeJs / GraphQl / Stripe payment methode
+# BackEnd with NodeJs / GraphQl / JsonWebToken authentication / Stripe payment method
  
