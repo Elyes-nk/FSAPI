@@ -5,16 +5,15 @@ const cors=require('cors');
 
 require("dotenv").config();
 
-//===================WEBHOOKS MIDDELWARE========================
+//===========================================WEBHOOKS MIDDELWARE========================================================
 app.use('/api/webhooks/stripe', express.raw({type: "*/*"}))
-//==============================================================
-
+//======================================================================================================================
 app.use(express.json());
 app.use(cors());
 app.use('/api', apiRouter);
 
 
-//======================couche graphQl=========================
+//===========================================couche graphQl=============================================================
 const { ApolloServer, gql } = require('apollo-server-express');
 const ProductSchema = require('../graphQl/schemas/product');
 const UserSchema = require('../graphQl/schemas/user');
@@ -29,11 +28,11 @@ const graphQlServer = new ApolloServer({
   resolvers:[productResolvers,userResolvers,orderResolvers]
 });
 graphQlServer.applyMiddleware({ app, path: '/graphql' })
-//==============================================================
+//======================================================================================================================
 
 
 
-//================================================================
+//======================================================================================================================
 exports.start = () => {   
     app.listen(process.env.PORT, (err)=>{
         if (err) {
@@ -42,3 +41,4 @@ exports.start = () => {
         console.log("BACKEND is running 🔥 at port : "+process.env.PORT);
     });
 }
+//======================================================================================================================

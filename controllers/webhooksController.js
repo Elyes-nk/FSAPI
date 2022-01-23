@@ -33,13 +33,13 @@ exports.stripewebhook = (req, res) => {
     case "payment_intent.succeeded":
       const newOrder = new Order({
         amount: data.object.amount / 100,
-        date:data.object.created,
+        date: data.object.created,
         user: data.object.metadata.userId,
         products: JSON.parse(data.object.metadata.productsId),
         stripeId: data.object.id,
         status: data.object.status
       });
-      newOrder.save().then((data) => console.log(data)).catch(err => console.log(err));
+      newOrder.save().catch(err => console.log(err));
       break;
     default:
   }
