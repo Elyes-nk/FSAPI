@@ -1,2 +1,2 @@
-# BackEnd with NodeJs / GraphQl / JsonWebToken authentication / Stripe payment method
- 
+# Blog
+base FrontEnd Blog with React soon BackEnd 
