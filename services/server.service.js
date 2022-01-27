@@ -2,6 +2,7 @@ const express = require('express');
 const app = express();
 const apiRouter = require('../routes');
 const cors=require('cors');
+const jwt = require("jsonwebtoken");
 
 require("dotenv").config();
 
@@ -23,14 +24,15 @@ const productResolvers = require('../graphQl/resolvers/product');
 const userResolvers = require('../graphQl/resolvers/user');
 const orderResolvers = require('../graphQl/resolvers/order');
 
+const Auth = require('../graphQl/auth/auth');
+
 const graphQlServer = new ApolloServer({
   typeDefs: [ProductSchema,UserSchema,OrderSchema],
-  resolvers:[productResolvers,userResolvers,orderResolvers]
+  resolvers:[productResolvers,userResolvers,orderResolvers],
+  context : Auth
 });
 graphQlServer.applyMiddleware({ app, path: '/graphql' })
 //======================================================================================================================
-
-
 
 //======================================================================================================================
 exports.start = () => {   

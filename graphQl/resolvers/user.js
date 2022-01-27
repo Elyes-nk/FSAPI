@@ -16,15 +16,14 @@ module.exports = {
             });
             return newUser.save();
         },
-        updateUser: (parent, args) => {
-            const user = User.find(user => user.id === args.id);
+        updateUser: (parent, args, context) => {
+            // return User.findByIdAndUpdate(context.userId, args.data.username, args.data.email );
+            const user = User.findById(context.userId);
             if (!user) throw new Error('User not found');
-
             // This way, only the fields that are passed-in will be changed.
             if (typeof args.data.username === "string") user.username = args.data.username;
             if (typeof args.data.email === "string") user.email = args.data.email;
             if (typeof args.data.password === "string") user.password = args.data.password;
-
             return user;
         },
         deleteUser: (parent, args) => {
